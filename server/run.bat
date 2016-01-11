@@ -1,0 +1,1 @@
+python main.py sources.txt "../client/content/feed.json"
