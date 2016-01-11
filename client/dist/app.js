@@ -19678,7 +19678,8 @@
 	        var articles = this.state.articles;
 	        var hasArticles = articles.length > 0;
 	        var articleElements = hasArticles ? articles.map(function (article, idx) { return React.createElement(FeedArticle, {"key": idx, "article": article}); }) : React.createElement("p", null, "No article summaries.");
-	        return (React.createElement("div", {"className": "articles"}, React.createElement("h2", null, "Articles"), articleElements));
+	        var header = React.createElement("h2", null, articleElements.length, " Articles");
+	        return (React.createElement("div", {"className": "articles"}, header, articleElements));
 	    };
 	    return FeedContainer;
 	})(React.Component);
@@ -19695,22 +19696,134 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(1);
+	var ArticleTitle = __webpack_require__(161);
+	var SummaryList = __webpack_require__(162);
+	var ArticleToggle = __webpack_require__(164);
 	var FeedArticle = (function (_super) {
 	    __extends(FeedArticle, _super);
 	    function FeedArticle() {
-	        _super.apply(this, arguments);
+	        _super.call(this);
+	        this.state = {
+	            isCollapsed: true
+	        };
 	    }
-	    FeedArticle.prototype.componentDidMount = function (props) {
-	        this.props = props;
+	    FeedArticle.prototype.onToggleClicked = function () {
+	        this.setState({
+	            isCollapsed: !this.state.isCollapsed
+	        });
 	    };
 	    FeedArticle.prototype.render = function () {
 	        var article = this.props.article;
-	        var summary = article.summary.map(function (summ, idx) { return React.createElement("li", {"key": idx}, summ); });
-	        return (React.createElement("section", {"className": "article"}, React.createElement("h3", {"className": "title"}, React.createElement("a", {"target": "_blank", "href": article.url}, article.title)), React.createElement("ul", null, summary)));
+	        var summary = this.state.isCollapsed ? React.createElement("div", null) : React.createElement(SummaryList, {"summary": article.summary});
+	        return (React.createElement("section", {"className": "article"}, React.createElement(ArticleToggle, {"onToggleClicked": this.onToggleClicked.bind(this), "isCollapsed": this.state.isCollapsed}), React.createElement(ArticleTitle, {"url": article.url, "title": article.title}), React.createElement("span", {"className": "badge article-summary-count"}, article.summary.length), summary));
 	    };
 	    return FeedArticle;
 	})(React.Component);
 	module.exports = FeedArticle;
+
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var ArticleTitle = (function (_super) {
+	    __extends(ArticleTitle, _super);
+	    function ArticleTitle() {
+	        _super.apply(this, arguments);
+	    }
+	    ArticleTitle.prototype.componentDidMount = function (props) {
+	        this.props = props;
+	    };
+	    ArticleTitle.prototype.render = function () {
+	        return (React.createElement("h3", {"className": "title"}, React.createElement("a", {"target": "_blank", "href": this.props.url}, this.props.title)));
+	    };
+	    return ArticleTitle;
+	})(React.Component);
+	module.exports = ArticleTitle;
+
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var SummarySentence = __webpack_require__(163);
+	var SummaryList = (function (_super) {
+	    __extends(SummaryList, _super);
+	    function SummaryList() {
+	        _super.apply(this, arguments);
+	    }
+	    SummaryList.prototype.componentDidMount = function (props) {
+	        this.props = props;
+	    };
+	    SummaryList.prototype.render = function () {
+	        var sentences = this.props.summary.map(function (sentence, idx) { return React.createElement(SummarySentence, {"key": idx, "sentence": sentence}); });
+	        return (React.createElement("ol", {"className": "summary-list"}, sentences));
+	    };
+	    return SummaryList;
+	})(React.Component);
+	module.exports = SummaryList;
+
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var SummarySentence = (function (_super) {
+	    __extends(SummarySentence, _super);
+	    function SummarySentence() {
+	        _super.apply(this, arguments);
+	    }
+	    SummarySentence.prototype.componentDidMount = function (props) {
+	        this.props = props;
+	    };
+	    SummarySentence.prototype.render = function () {
+	        return (React.createElement("li", null, this.props.sentence));
+	    };
+	    return SummarySentence;
+	})(React.Component);
+	module.exports = SummarySentence;
+
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var ArticleToggle = (function (_super) {
+	    __extends(ArticleToggle, _super);
+	    function ArticleToggle() {
+	        _super.apply(this, arguments);
+	    }
+	    ArticleToggle.prototype.render = function () {
+	        var classes = this.props.isCollapsed ? "glyphicon glyphicon-plus" : "glyphicon glyphicon-minus";
+	        return (React.createElement("button", {"onClick": this.props.onToggleClicked, "type": "button", "className": "btn btn-default toggle-btn"}, React.createElement("span", {"className": classes})));
+	    };
+	    return ArticleToggle;
+	})(React.Component);
+	module.exports = ArticleToggle;
 
 
 /***/ }

@@ -136,8 +136,15 @@ def get_summaries(source_filename):
     summaries = list()
     urls = io.open(source_filename, 'r+')
     for url in urls:
-        summary = summarize(url=url.strip())
-        summaries.append(summary)
+        sourceUrl = url.strip()
+        if (sourceUrl):
+            print "Parsing", url
+            try:
+                summary = summarize(url=sourceUrl)
+                summaries.append(summary)
+            except:
+                print "Error parsing", url
+
     urls.close()
     return summaries
 

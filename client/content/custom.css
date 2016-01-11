@@ -4,4 +4,20 @@
 
 .article .title{
     font-size: 1.3em;
+    display: inline-block;
+}
+
+.toggle-btn{
+    font-size: .75em;
+    padding: 6px 6px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.article-summary-count{
+    margin-left:10px;
+}
+
+.summary-list li:hover{
+    background: #eee;
 }
